@@ -18,10 +18,8 @@ def execute(code):
     grid[position] = 1
 
     for move in moves:
-        if move == "L":
-            movement = left(movement)
-        elif move == "R":
-            movement = right(movement)
+        if move in "LR":
+            movement = move_robot(movement, move)
         else:
             position = (position[0] + movement[0], position[1] + movement[1])
             grid[position] = 1
@@ -64,14 +62,10 @@ def render(grid):
     return stringify(rows, "\r\n")
 
 
-def left(movement):
-    movements = [(0, 1), (-1, 0), (0, -1), (1, 0), (0, 1)]
-    return movements[movements.index(movement) + 1]
-
-
-def right(movement):
-    movements = [(0, 1), (1, 0), (0, -1), (-1, 0), (0, 1)]
-    return movements[movements.index(movement) + 1]
+def move_robot(movement, direction):
+    movements = [(0, 1), (1, 0), (0, -1), (-1, 0)]
+    index = (movements.index(movement) + (1 if direction == "R" else -1)) % 4
+    return movements[index]
 
 
 def extract_patterns(code):
